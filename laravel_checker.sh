@@ -11,6 +11,7 @@ laravel_checker () {
   verify_laravel_log
   verify_cache
   verify_storage_views
+  check_node_folder
 }
 
 enter_vhost_user() {
@@ -63,6 +64,14 @@ verify_storage_views() {
     echo The $storage_views_path owner is not the user host \($user_host\)
     echo Execute \`chown $user_host $storage_views_path\`.
     exit
+  fi
+}
+
+check_node_folder() {
+  if [ ! -d node_modules ]; then
+    echo I have not found the node_modules folder.
+    echo Does not your Laravel installation needs frontend compilation?
+    echo May you need run \`npm install\`.
   fi
 }
 
