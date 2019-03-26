@@ -10,11 +10,11 @@ laravel_checker () {
   verify_debug_log
   verify_laravel_log
   verify_cache
+  verify_storage_views
 }
 
 enter_vhost_user() {
   read -p "Which is the name of the user host? " user_host
-  echo The host user is $user_host
 }
 
 verify_debug_log() {
@@ -49,7 +49,19 @@ verify_cache() {
   cache_folder_owner=$(stat -c '%U' $cache_folder)
 
   if [ $user_host != $cache_folder_owner ]; then
-    echo The cache file owner is not the user host ($user_host).
+    echo The cache file owner is not the user host \($user_host\).
+    echo Execute \`chown www-data $cache_folder\`.
+    exit
+  fi
+}
+
+verify_storage_views() {
+  storage_views_path=storage/framework/views
+  views_path_owner=$(stat -c '%U' $storage_views_path)
+
+  if [ $user_host != $views_path_owner ]; then
+    echo The $storage_views_path owner is not the user host \($user_host\)
+    echo Execute \`chown www-data $views_path_owner\`.
     exit
   fi
 }
