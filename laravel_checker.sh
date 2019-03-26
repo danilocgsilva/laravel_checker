@@ -61,7 +61,7 @@ verify_storage_views() {
 
   if [ $user_host != $views_path_owner ]; then
     echo The $storage_views_path owner is not the user host \($user_host\)
-    echo Execute \`chown www-data $views_path_owner\`.
+    echo Execute \`chown $user_host $storage_views_path\`.
     exit
   fi
 }
