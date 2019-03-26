@@ -5,10 +5,10 @@ VERSION="0.0.0"
 
 ## Main function
 laravel_checker () {
-  if [ -d vendor ]; do
+  if [ ! -d vendor ]; then
     echo You may install the project. Vendor folder is missing...
     exit
-  done
+  fi
 }
 
 ## detect if being sourced and
