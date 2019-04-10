@@ -27,7 +27,10 @@ verify_debug_log() {
 
   if [ ! -f $logs_files ]; then
     echo The $logs_files does not exits.
-    echo Just execute: \`touch $logs_files\`, then set correct permission.
+    echo --Just execute: \`touch $logs_files\`, then set correct permission.
+    echo --Sugestion for permissions:
+    echo ----\`chmod 775 $logs_files\`
+    echo ----\`chown $(whoami):$user_host\`
   elif [ $(extract_file_owner $logs_files) != $user_host ]; then
     echo Caution! The file $logs_files does not is owned by the web server user.
     echo run \'chown $user_host $logs_files\'
@@ -40,6 +43,9 @@ verify_laravel_log() {
   if [ ! -f $logs_files ]; then
     echo The $logs_files does not exits.
     echo Just execute: \`touch $logs_files\`, then set correct permission.
+    echo --Sugestion for permissions:
+    echo ----\`chmod 775 $logs_files\`
+    echo ----\`chown $(whoami):$user_host\`
   elif [ $(extract_file_owner $logs_files) != $user_host ]; then
     echo Caution! The file $logs_files does not is owned by the web server user.
     echo run \'chown $user_host $logs_files\'
