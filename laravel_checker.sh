@@ -16,6 +16,7 @@ laravel_checker () {
 
 enter_vhost_user() {
   read -p "Which is the name of the user host? " user_host
+  save_host_user_to_machine
 }
 
 extract_file_owner() {
@@ -45,7 +46,7 @@ verify_laravel_log() {
     echo Just execute: \`touch $logs_files\`, then set correct permission.
     echo --Sugestion for permissions:
     echo ----\`chmod 775 $logs_files\`
-    echo ----\`chown $(whoami):$user_host\`
+    echo ----\`chown $(whoami):$user_host $logs_files\`
   elif [ $(extract_file_owner $logs_files) != $user_host ]; then
     echo Caution! The file $logs_files does not is owned by the web server user.
     echo run \'chown $user_host $logs_files\'
@@ -76,6 +77,11 @@ verify_storage_views() {
     echo The $storage_views_path owner is not the user host \($user_host\)
     echo Execute \`chown $user_host $storage_views_path\`.
   fi
+}
+
+save_host_user_to_machine() {
+  echo $user_host > ~/.laravel_checker
+  echo "The user host has been saved locally in the computer."
 }
 
 check_node_folder() {
