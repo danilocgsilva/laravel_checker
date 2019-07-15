@@ -83,7 +83,7 @@ verify_cache() {
 
   if [ $user_host != $cache_folder_owner ]; then
     echo The cache file owner is not the user host \($user_host\).
-    echo Execute \`chown www-data $cache_folder\`.
+    echo Execute \`chown $(fetches_locally_saved_server_host) $cache_folder\`.
   fi
 }
 
