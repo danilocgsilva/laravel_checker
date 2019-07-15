@@ -17,7 +17,8 @@ laravel_checker () {
 }
 
 enter_vhost_user() {
-  if [ $(fetches_locally_saved_server_host) = "" ]
+
+  if [[ $(fetches_locally_saved_server_host) = "" ]]
   then
     read -p "Which is the name of the user host? " user_host
     save_host_user_to_machine
@@ -27,6 +28,7 @@ enter_vhost_user() {
 }
 
 fetches_locally_saved_server_host() {
+
   if [ -f $user_host_file ]
   then
     cat $user_host_file
@@ -48,7 +50,7 @@ verify_debug_log() {
     echo --Sugestion for permissions:
     echo ----\`chmod 775 $logs_files\`
     echo ----\`chown $(whoami):$user_host\`
-  elif [ $(extract_file_owner $logs_files) != $user_host ]; then
+  elif [[ $(extract_file_owner $logs_files) != $user_host ]]; then
     echo Caution! The file $logs_files does not is owned by the web server user.
     echo run \'chown $user_host $logs_files\'
   fi
