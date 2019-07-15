@@ -1,7 +1,9 @@
 #!/bin/bash
 
 ## version
-VERSION="0.0.0"
+VERSION="0.1.0"
+
+user_host_file=~/.laravel_checker
 
 ## Main function
 laravel_checker () {
@@ -15,8 +17,22 @@ laravel_checker () {
 }
 
 enter_vhost_user() {
-  read -p "Which is the name of the user host? " user_host
-  save_host_user_to_machine
+  if [ $(fetches_locally_saved_server_host) = "" ]
+  then
+    read -p "Which is the name of the user host? " user_host
+    save_host_user_to_machine
+  else
+    user_host=$(fetches_locally_saved_server_host)
+  fi
+}
+
+fetches_locally_saved_server_host() {
+  if [ -f $user_host_file ]
+  then
+    cat $user_host_file
+  else
+    echo ""
+  fi
 }
 
 extract_file_owner() {
@@ -80,7 +96,7 @@ verify_storage_views() {
 }
 
 save_host_user_to_machine() {
-  echo $user_host > ~/.laravel_checker
+  echo $user_host > $user_host_file
   echo "The user host has been saved locally in the computer."
 }
 
