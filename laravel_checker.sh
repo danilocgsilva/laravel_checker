@@ -133,6 +133,7 @@ change_file_permission() {
 verify_env() {
   if ! [ -f .env ]; then
     cp .env.example .env
+  fi
 }
 
 
