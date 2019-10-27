@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## version
-VERSION="0.1.0"
+VERSION="0.1.1"
 
 user_host_file=~/.laravel_checker
 
@@ -46,13 +46,17 @@ verify_debug_log() {
 
   if [ ! -f $logs_files ]; then
     echo The $logs_files does not exits.
-    echo --Just execute: \`touch $logs_files\`, then set correct permission.
-    echo --Sugestion for permissions:
-    echo ----\`chmod 775 $logs_files\`
-    echo ----\`chown $(whoami):$user_host $logs_files\`
-  elif [[ $(extract_file_owner $logs_files) != $user_host ]]; then
+    creates_empty_file $logs_files
+    echo The log file $logs_files has just been created.
+  fi
+
+  if [[ $(extract_file_owner $logs_files) != $user_host ]]; then
     echo Caution! The file $logs_files does not is owned by the web server user.
-    echo run \'chown $user_host $logs_files\'
+    if change_file_permission $logs_files $user_host ; then
+      echo To $logs_files has been setted the correct permission
+    else
+      echo run \'chown $user_host $logs_files\'
+    fi
   fi
 }
 
@@ -61,7 +65,10 @@ verify_laravel_log() {
 
   if [ ! -f $logs_files ]; then
     echo The $logs_files does not exits.
-    echo Just execute: \`touch $logs_files\`, then set correct permission.
+    creates_empty_file $logs_files
+    echo The file $logs_files has just been created.
+    #echo Just execute: \`touch $logs_files\`, then set correct permission.
+
     echo --Sugestion for permissions:
     echo ----\`chmod 775 $logs_files\`
     echo ----\`chown $(whoami):$user_host $logs_files\`
@@ -108,6 +115,18 @@ check_node_folder() {
     echo Does not your Laravel installation needs frontend compilation?
     echo May you need run \`npm install\`.
   fi
+}
+
+creates_empty_file() {
+  path_only_folders="${1%/*}"
+  mkdir -p $path_only_folders
+  touch $1
+}
+
+## First argument stands for file
+## Second argument stands for owner
+change_file_permission() {
+  chown $2 $1
 }
 
 ## detect if being sourced and
