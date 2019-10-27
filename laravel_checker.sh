@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## version
-VERSION="0.1.1"
+VERSION="0.1.2"
 
 user_host_file=~/.laravel_checker
 
@@ -14,6 +14,7 @@ laravel_checker () {
   verify_cache
   verify_storage_views
   check_node_folder
+  verify_env
 }
 
 enter_vhost_user() {
@@ -128,6 +129,12 @@ creates_empty_file() {
 change_file_permission() {
   chown $2 $1
 }
+
+verify_env() {
+  if ! [ -f .env ]; then
+    cp .env.example .env
+}
+
 
 ## detect if being sourced and
 ## export if so else execute
